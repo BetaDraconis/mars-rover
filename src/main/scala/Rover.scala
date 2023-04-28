@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-case class Rover (position: (Int, Int), rotation: Int, gridSize: Int){
+case class Rover (position: Position, rotation: GridRotation, gridSize: Int){
 
-  def moveForward(amount: Int): Rover = ???
+  def moveForward(amount: Int): Rover = {
+    val changeInPosition: Position = this.rotation.directionVector.toChangeInPosition(amount)
+    val newPositionRaw: Position = this.position + changeInPosition
+    val newPositionCorrected = Position.correctPositionToGrid(newPositionRaw, gridSize)
 
-  def rotate(amount: Int): Rover = ???
+    this.copy(position = newPositionCorrected)
+  }
 
+  def rotate(clockwise: Boolean): Rover = {
+    val newRotation = if (clockwise) this.rotation.nextClockwise else this.rotation.nextAntiClockwise
+    this.copy(rotation = newRotation)
+  }
 }

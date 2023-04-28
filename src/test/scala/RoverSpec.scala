@@ -16,44 +16,52 @@
 
 class RoverSpec extends UnitSpec {
 
-  private val dummyRover: Rover = Rover((0, 0), 0, 100)
+  private val dummyRover: Rover = Rover(Position(xVal = 0, yVal = 0), UP, 100)
 
   "moveForward" when {
     "supplied with a valid amount" should {
       "correctly change Rover position" in {
-        dummyRover.moveForward(10) shouldBe dummyRover.copy(position = (0, 10))
+        dummyRover.moveForward(10) shouldBe dummyRover.copy(Position(xVal = 0, yVal = 10))
+      }
+    }
+
+
+    "supplied with a valid amount, and non-upwards rotation" should {
+      "correctly change Rover position" in {
+        val downRightDummyRover = Rover(Position(0, 0), DOWN_RIGHT, 100)
+        downRightDummyRover.moveForward(10) shouldBe downRightDummyRover.copy(Position(xVal = 10, yVal = -10))
       }
     }
 
     "movement causes Rover to leave the grid" should {
       "correct position to the other side of the grid" in {
-        dummyRover.moveForward(101) shouldBe dummyRover.copy(position = (0, -100))
+        dummyRover.moveForward(101) shouldBe dummyRover.copy(Position(xVal = 0, yVal = -100))
       }
     }
 
     "supplied with a value of zero" should {
-      "return an error" in {
-        dummyRover.moveForward(0) shouldBe ???
+      "return the Rover with the same position" in {
+        dummyRover.moveForward(0) shouldBe dummyRover
       }
     }
 
     "supplied with a negative value" should {
-      "return an error" in {
-        dummyRover.moveForward(0) shouldBe ???
+      "return the Rover moved backwards" in {
+        dummyRover.moveForward(-10) shouldBe dummyRover.copy(position = Position(xVal = 0, yVal = -10))
       }
     }
   }
 
   "rotate" when {
-    "supplied with a positive amount" should {
+    "supplied with `true`" should {
       "handle clockwise change in Rover rotation" in {
-        dummyRover.rotate(10) shouldBe dummyRover.copy(rotation = 10)
+        dummyRover.rotate(true) shouldBe dummyRover.copy(rotation = UP_RIGHT)
       }
     }
 
-    "supplied with a negative amount" should {
+    "supplied with `false`" should {
       "handle anti-clockwise change in Rover rotation" in {
-        dummyRover.rotate(10) shouldBe dummyRover.copy(rotation = -10)
+        dummyRover.rotate(false) shouldBe dummyRover.copy(rotation = UP_LEFT)
       }
     }
   }
