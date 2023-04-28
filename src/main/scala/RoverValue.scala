@@ -17,6 +17,8 @@
 sealed trait RoverValue {
   val xVal: Int
   val yVal: Int
+
+  def toCoordString: String = s"(x: $yVal, y: $yVal)"
 }
 
 case class RotationVector(xVal: Int, yVal: Int) extends RoverValue {

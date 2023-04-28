@@ -35,12 +35,12 @@ class RoverValueSpec extends UnitSpec {
 
     "supplied an off-grid position" should {
       def testGridPosition(uncorrected: Position, corrected: Position): Unit = {
-        s"return the grid position: $corrected, for supplied the grid position: ${uncorrected.toString}" in {
+        s"return the grid position: $corrected, for supplied the grid position: $uncorrected" in {
           Position.correctPositionToGrid(uncorrected, 100) shouldBe corrected
         }
       }
 
-      val a = Seq(
+      val testScenarios = Seq(
         // Right
         (Position(xVal = 101, yVal = 10), Position(xVal = -100, yVal = 10)),
         // Up-right
@@ -59,7 +59,7 @@ class RoverValueSpec extends UnitSpec {
         (Position(xVal = 101, yVal = -101), Position(xVal = -100, yVal = 100)),
       )
 
-      a.foreach(test => testGridPosition(test._1, test._2))
+      testScenarios.foreach(test => testGridPosition(uncorrected = test._1, corrected = test._2))
     }
   }
 }
